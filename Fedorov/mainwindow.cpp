@@ -7,7 +7,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     serial = new QSerialPort(this);
 
-
     label_distance = new QLabel("0");
     label_cm = new QLabel("cm");
 
@@ -44,27 +43,6 @@ MainWindow::MainWindow(QWidget *parent)
     //connect(serial, SIGNAL(readyRead()), SLOT(Slot_readFromSerialPort()));
     connect(button_start, SIGNAL(clicked(bool)), this, SLOT(Slot_distanceProgramSTART()));
     connect(button_stop, SIGNAL(clicked(bool)), this, SLOT(Slot_distanceProgramSTOP()));
-
-
-
-//    distanceBar = new QProgressBar;
-//    distanceBar->setRange(0, 255);
-//    distanceBar->setMaximumWidth(200);
-//    distanceBar->setAlignment(Qt::AlignCenter);
-
-
-
-
-
-//    QString info = "ttyACM1";
-//    info += " Test2";
-//    QLabel *labelTEST = new QLabel;
-//    labelTEST->setText(info);
-
-
-
-
-
 }
 
 
@@ -87,10 +65,10 @@ void MainWindow::FillComboBoxWithSerialPortNames()
 void MainWindow::Slot_readFromSerialPort()
 {
     QByteArray data = serial->readAll();
-    //QMessageBox::warning(0, "Test", "Test");
-    label_distance->setText(QString(data));
-    //line->setText("TEST");
-    //distanceBar->setValue(int(data));
+
+    //if(!(QString(data) == "-"))
+        label_distance->setText(QString(data));
+
 
 }
 
@@ -106,15 +84,18 @@ void MainWindow::Slot_distanceProgramSTART()
 
 void MainWindow::Slot_distanceProgramSTOP()
 {
+    if (serial->isOpen())
+        serial->close();
+
     button_start->setEnabled(true);
     button_stop->setEnabled(false);
+    label_distance->setText("0");
 }
 
 
 void MainWindow::initializeSerialPort()
 {
     serial->setPortName(comboBox_serialName->currentText());
-    //serial->setPortName("ttyACMO");
     serial->setBaudRate(QSerialPort::Baud9600);
     serial->setDataBits(QSerialPort::Data8);
     serial->setParity(QSerialPort::NoParity);
@@ -125,7 +106,5 @@ void MainWindow::initializeSerialPort()
     {
         QMessageBox::warning(0, "Error", "Serial port not open!!!");
     }
-
-
 }
 
