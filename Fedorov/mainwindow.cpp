@@ -2,6 +2,7 @@
 #include <QBoxLayout>
 #include <QMessageBox>
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
 {
@@ -65,10 +66,12 @@ void MainWindow::FillComboBoxWithSerialPortNames()
 void MainWindow::Slot_readFromSerialPort()
 {
     QByteArray data = serial->readAll();
-
+    QString bufferData;
+    bufferData += data.constData();
     //if(!(QString(data) == "-"))
-        label_distance->setText(QString(data));
-
+    //data.ass
+    label_distance->setText(bufferData);
+    //label_distance->setText();
 
 }
 
