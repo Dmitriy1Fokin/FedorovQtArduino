@@ -33,7 +33,7 @@ void MainWindow::DrawGUI()
 
 
     distanceBar = new QProgressBar;
-    distanceBar->setRange(0, 19);
+    distanceBar->setRange(1, 10);
     //distanceBar->setMaximumWidth(150);
     distanceBar->setTextVisible(false);
     label_serialName = new QLabel("Serial port names:");
@@ -156,6 +156,7 @@ void MainWindow::Slot_distanceProgramSTOP()
     button_start->setEnabled(true);
     button_stop->setEnabled(false);
     lineEdit_distance->setText("0");
+    distanceBar->reset();
 }
 
 
@@ -174,9 +175,9 @@ void MainWindow::Slot_distanceBarChange()
 {
     distanceBar->setValue(lineEdit_distance->text().toInt(0, 10));
 
-    if(distanceBar->value() < 7)
+    if(distanceBar->value() < 4)
         distanceBar->setStyleSheet("QProgressBar::chunk{background-color: green}");
-    else if(distanceBar->value() >= 7 && distanceBar->value() < 14)
+    else if(distanceBar->value() >= 4 && distanceBar->value() < 7)
         distanceBar->setStyleSheet("QProgressBar::chunk{background-color: yellow}");
     else
         distanceBar->setStyleSheet("QProgressBar::chunk{background-color: red}");
