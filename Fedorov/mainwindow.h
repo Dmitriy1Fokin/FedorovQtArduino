@@ -24,23 +24,27 @@ public:
 private:
     QPushButton *button_start;
     QPushButton *button_stop;
+    QPushButton *button_refresh;
+    QPushButton *button_exit;
     QLineEdit *lineEdit_distance;
     QLabel *label_cm;
     QLabel *label_serialName;
     QComboBox *comboBox_serialName;
     QSerialPort *serial;
+    QProgressBar *distanceBar;
 
+    void DrawGUI();
     void FillComboBoxWithSerialPortNames();
+    void initConnection();
     void initializeSerialPort();
-
-    QProgressBar *distanceBar; // may be delete
-
+    void CheckIsOpenSerialPort();
 
 private slots:
     void Slot_readFromSerialPort();
     void Slot_distanceProgramSTART();
     void Slot_distanceProgramSTOP();
     void Slot_distanceBarChange();
+    void Slot_refresh();
 };
 
 #endif // MAINWINDOW_H
