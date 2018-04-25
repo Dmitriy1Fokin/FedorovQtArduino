@@ -52,6 +52,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(button_start, SIGNAL(clicked(bool)), this, SLOT(Slot_distanceProgramSTART()));
     connect(button_stop, SIGNAL(clicked(bool)), this, SLOT(Slot_distanceProgramSTOP()));
     connect(lineEdit_distance, SIGNAL(textChanged(QString)), this, SLOT(Slot_distanceBarChange()));
+    connect(comboBox_serialName, SIGNAL(currentIndexChanged(int)), this, SLOT(Slot_distanceProgramSTOP()));
 }
 
 
