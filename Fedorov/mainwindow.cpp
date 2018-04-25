@@ -9,17 +9,24 @@ MainWindow::MainWindow(QWidget *parent)
     serial = new QSerialPort(this);
 
     label_distance = new QLabel("0");
+    label_distance->setFixedWidth(20);
     label_cm = new QLabel("cm");
+    label_cm->setFixedWidth(20);
 
-    QHBoxLayout *hLayout1 = new QHBoxLayout;
+    QHBoxLayout *hLayout1 = new QHBoxLayout();
     hLayout1->addWidget(label_distance);
     hLayout1->addWidget(label_cm);
 
+    distanceBar = new QProgressBar;
+    distanceBar->setRange(0, 19);
+    distanceBar->setMaximumWidth(150);
+    distanceBar->setAlignment(Qt::AlignCenter);
     label_serialName = new QLabel("Serial port names:");
     comboBox_serialName = new QComboBox();
     FillComboBoxWithSerialPortNames();
 
     QVBoxLayout *vLayout1 = new QVBoxLayout;
+    vLayout1->addWidget(distanceBar);
     vLayout1->addWidget(label_serialName);
     vLayout1->addWidget(comboBox_serialName);
 
@@ -44,6 +51,7 @@ MainWindow::MainWindow(QWidget *parent)
     //connect(serial, SIGNAL(readyRead()), SLOT(Slot_readFromSerialPort()));
     connect(button_start, SIGNAL(clicked(bool)), this, SLOT(Slot_distanceProgramSTART()));
     connect(button_stop, SIGNAL(clicked(bool)), this, SLOT(Slot_distanceProgramSTOP()));
+    connect(label_distance, SIGNAL(windowIconChanged(QIcon)), this, SLOT(Slot_distanceBarChange()));
 }
 
 
@@ -66,12 +74,12 @@ void MainWindow::FillComboBoxWithSerialPortNames()
 void MainWindow::Slot_readFromSerialPort()
 {
     QByteArray data = serial->readAll();
-    QString bufferData;
-    bufferData += data.constData();
+    //QString bufferData;
+    //bufferData += data.constData();
     //if(!(QString(data) == "-"))
     //data.ass
-    label_distance->setText(bufferData);
-    //label_distance->setText();
+    //label_distance->setText(bufferData);
+    label_distance->setText(QString(data));
 
 }
 
@@ -111,3 +119,9 @@ void MainWindow::initializeSerialPort()
     }
 }
 
+
+void MainWindow::Slot_distanceBarChange()
+{
+    distanceBar->setValue(label_distance->text().toInt(0, 10));
+
+}

@@ -40,6 +40,7 @@ private slots:
     void Slot_readFromSerialPort();
     void Slot_distanceProgramSTART();
     void Slot_distanceProgramSTOP();
+    void Slot_distanceBarChange();
 };
 
 #endif // MAINWINDOW_H
