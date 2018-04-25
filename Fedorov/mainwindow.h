@@ -24,7 +24,7 @@ public:
 private:
     QPushButton *button_start;
     QPushButton *button_stop;
-    QLabel *label_distance;
+    QLineEdit *lineEdit_distance;
     QLabel *label_cm;
     QLabel *label_serialName;
     QComboBox *comboBox_serialName;

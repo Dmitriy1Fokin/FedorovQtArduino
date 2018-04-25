@@ -8,19 +8,19 @@ MainWindow::MainWindow(QWidget *parent)
 {
     serial = new QSerialPort(this);
 
-    label_distance = new QLabel("0");
-    label_distance->setFixedWidth(20);
+    lineEdit_distance = new QLineEdit("0");
+    lineEdit_distance->setFixedWidth(25);
     label_cm = new QLabel("cm");
     label_cm->setFixedWidth(20);
 
     QHBoxLayout *hLayout1 = new QHBoxLayout();
-    hLayout1->addWidget(label_distance);
+    hLayout1->addWidget(lineEdit_distance);
     hLayout1->addWidget(label_cm);
 
     distanceBar = new QProgressBar;
     distanceBar->setRange(0, 19);
     distanceBar->setMaximumWidth(150);
-    distanceBar->setAlignment(Qt::AlignCenter);
+    distanceBar->setTextVisible(false);
     label_serialName = new QLabel("Serial port names:");
     comboBox_serialName = new QComboBox();
     FillComboBoxWithSerialPortNames();
@@ -51,7 +51,7 @@ MainWindow::MainWindow(QWidget *parent)
     //connect(serial, SIGNAL(readyRead()), SLOT(Slot_readFromSerialPort()));
     connect(button_start, SIGNAL(clicked(bool)), this, SLOT(Slot_distanceProgramSTART()));
     connect(button_stop, SIGNAL(clicked(bool)), this, SLOT(Slot_distanceProgramSTOP()));
-    connect(label_distance, SIGNAL(windowIconChanged(QIcon)), this, SLOT(Slot_distanceBarChange()));
+    connect(lineEdit_distance, SIGNAL(textChanged(QString)), this, SLOT(Slot_distanceBarChange()));
 }
 
 
@@ -79,7 +79,7 @@ void MainWindow::Slot_readFromSerialPort()
     //if(!(QString(data) == "-"))
     //data.ass
     //label_distance->setText(bufferData);
-    label_distance->setText(QString(data));
+    lineEdit_distance->setText(QString(data));
 
 }
 
@@ -100,7 +100,7 @@ void MainWindow::Slot_distanceProgramSTOP()
 
     button_start->setEnabled(true);
     button_stop->setEnabled(false);
-    label_distance->setText("0");
+    lineEdit_distance->setText("0");
 }
 
 
@@ -122,6 +122,12 @@ void MainWindow::initializeSerialPort()
 
 void MainWindow::Slot_distanceBarChange()
 {
-    distanceBar->setValue(label_distance->text().toInt(0, 10));
+    distanceBar->setValue(lineEdit_distance->text().toInt(0, 10));
 
+    if(distanceBar->value() < 7)
+        distanceBar->setStyleSheet("QProgressBar::chunk{background-color: green}");
+    else if(distanceBar->value() >= 7 && distanceBar->value() < 14)
+        distanceBar->setStyleSheet("QProgressBar::chunk{background-color: yellow}");
+    else
+        distanceBar->setStyleSheet("QProgressBar::chunk{background-color: red}");
 }
