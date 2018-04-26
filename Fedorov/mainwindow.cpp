@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include <QBoxLayout>
 #include <QMessageBox>
+#include <QRegExp>
+#include <QDebug>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -33,7 +35,7 @@ void MainWindow::DrawGUI()
 
 
     distanceBar = new QProgressBar;
-    distanceBar->setRange(1, 10);
+    distanceBar->setRange(0, 255);
     //distanceBar->setMaximumWidth(150);
     distanceBar->setTextVisible(false);
     label_serialName = new QLabel("Serial port names:");
@@ -105,13 +107,17 @@ void MainWindow::initConnection()
 void MainWindow::Slot_readFromSerialPort()
 {
     QByteArray data = serial->readAll();
-    //QString bufferData;
-    //bufferData += data.constData();
-    //if(!(QString(data) == "-"))
-    //data.ass
-    //label_distance->setText(bufferData);
-    lineEdit_distance->setText(QString(data));
+    QRegExp re("[0-9]{1,3}-{1,1}");
+    QString bufferData;
+    bufferData += data.constData();
 
+    if(re.exactMatch(bufferData))
+    {
+        bufferData.remove(bufferData.length() - 1, 1);
+        qDebug() << bufferData;
+        lineEdit_distance->setText(bufferData);
+        bufferData.clear();
+    }
 }
 
 
@@ -181,9 +187,9 @@ void MainWindow::Slot_distanceBarChange()
 
 void MainWindow::ChangeColorProgressBar(int valueBar)
 {
-    if(valueBar < 4)
+    if(valueBar < 85)
         distanceBar->setStyleSheet("QProgressBar::chunk{background-color: green}");
-    else if(valueBar >= 4 && valueBar < 7)
+    else if(valueBar >= 85 && valueBar < 170)
         distanceBar->setStyleSheet("QProgressBar::chunk{background-color: yellow}");
     else
         distanceBar->setStyleSheet("QProgressBar::chunk{background-color: red}");
