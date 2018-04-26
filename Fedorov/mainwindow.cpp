@@ -175,9 +175,15 @@ void MainWindow::Slot_distanceBarChange()
 {
     distanceBar->setValue(lineEdit_distance->text().toInt(0, 10));
 
-    if(distanceBar->value() < 4)
+    ChangeColorProgressBar(distanceBar->value());
+}
+
+
+void MainWindow::ChangeColorProgressBar(int valueBar)
+{
+    if(valueBar < 4)
         distanceBar->setStyleSheet("QProgressBar::chunk{background-color: green}");
-    else if(distanceBar->value() >= 4 && distanceBar->value() < 7)
+    else if(valueBar >= 4 && valueBar < 7)
         distanceBar->setStyleSheet("QProgressBar::chunk{background-color: yellow}");
     else
         distanceBar->setStyleSheet("QProgressBar::chunk{background-color: red}");

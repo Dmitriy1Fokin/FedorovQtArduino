@@ -38,6 +38,7 @@ private:
     void initConnection();
     void initializeSerialPort();
     void CheckIsOpenSerialPort();
+    void ChangeColorProgressBar(int valueBar);
 
 private slots:
     void Slot_readFromSerialPort();
